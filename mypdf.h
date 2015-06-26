@@ -8,19 +8,19 @@ typedef struct
 
 typedef enum
 {
-	PDF_INT = 'i',
-	PDF_REAL = 'f',
-	PDF_STRING = 's',
-	PDF_NAME = 'n',
-	PDF_ARRAY = 'a',
-	PDF_DICT = 'd',
-	PDF_INDIRECT = 'r'
+	PDF_INT,
+	PDF_REAL,
+	PDF_STRING,
+	PDF_NAME,
+	PDF_ARRAY,
+	PDF_DICT,
+	PDF_INDIRECT
 }OBJKIND;
 
 typedef struct
 {
 	// char slash[1];//'/name'	
-	char name[100];
+	char * name;
 }NAME;
 
 typedef struct _OBJ
@@ -46,14 +46,14 @@ typedef struct
 typedef struct _ARRAY
 {
 	int len;
-	struct _VALUE * items[100];
+	struct _VALUE * items[1000];
 }ARRAY;
 
 typedef struct _DICT
 {
 	int len;
-	NAME keys[100];
-	struct _VALUE * values[100];
+	NAME keys[1000];
+	struct _VALUE * values[1000];
 }DICT;
 
 // typedef struct _STREAM
@@ -88,7 +88,7 @@ typedef struct _XREF
 {
 	int startObjectIndex;
 	int numObjects;
-	char entries[100][21];
+	char entries[1000][21];
 	int xrefStartAddress;
 }XREF;
 

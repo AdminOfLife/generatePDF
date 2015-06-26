@@ -81,25 +81,25 @@ char * valueToString(VALUE v)
 	char * str = (char *)malloc(1000);
 	switch(v.k)
 	{
-		case 'i': 
+		case PDF_INT: 
 			sprintf(str, "%d", v.v.i);
 			break;
-		case 'f':
+		case PDF_REAL:
 			sprintf(str, "%f", v.v.f);
 			break;
-		case 's':
+		case PDF_STRING:
 			strcpy(str, stringToString(v.v.s));
 			break;
-		case 'n':
+		case PDF_NAME:
 			strcpy(str, nameToString(v.v.n));
 			break;
-		case 'a':
+		case PDF_ARRAY:
 			strcpy(str, arrayToString(v.v.a));
 			break;
-		case 'd':
+		case PDF_DICT:
 			strcpy(str, dictToString(v.v.d));
 			break;
-		case 'r':
+		case PDF_INDIRECT:
 			strcpy(str, indirectToString(v.v.r));
 			break;
 		default:
@@ -165,6 +165,7 @@ void addToDICT(DICT * d, NAME key, VALUE * value)
 NAME createNAME(char * name)
 {
 	NAME newNAME;
+	newNAME.name = (char *)malloc(strlen(name) + 1);
 	strcpy(newNAME.name, name);
 	return newNAME;
 }
@@ -172,6 +173,7 @@ NAME createNAME(char * name)
 STRING createSTRING(char * str)
 {
 	STRING newSTRING;
+	newSTRING.str = (char *)malloc(strlen(str) + 1);
 	strcpy(newSTRING.str, str);
 	return newSTRING;
 }
@@ -187,7 +189,7 @@ INDIRECT createINDIRECT(int objectNumber, int versionNumber)
 VALUE * createIntVALUE(int i)
 {
 	VALUE * newVALUE = (VALUE *)malloc(sizeof(VALUE));
-	newVALUE->k = 'i';
+	newVALUE->k = PDF_INT;
 	newVALUE->v.i = i;
 	return newVALUE;
 }
@@ -195,7 +197,7 @@ VALUE * createIntVALUE(int i)
 VALUE * createFloatVALUE(float f)
 {
 	VALUE * newVALUE = (VALUE *)malloc(sizeof(VALUE));
-	newVALUE->k = 'f';
+	newVALUE->k = PDF_REAL;
 	newVALUE->v.f = f;
 	return newVALUE;
 }
@@ -203,7 +205,7 @@ VALUE * createFloatVALUE(float f)
 VALUE * createStringVALUE(STRING s)
 {
 	VALUE * newVALUE = (VALUE *)malloc(sizeof(VALUE));
-	newVALUE->k = 's';
+	newVALUE->k = PDF_STRING;
 	newVALUE->v.s = s;
 	return newVALUE;
 }
@@ -211,7 +213,7 @@ VALUE * createStringVALUE(STRING s)
 VALUE * createNAMEVALUE(NAME n)
 {
 	VALUE * newVALUE = (VALUE *)malloc(sizeof(VALUE));
-	newVALUE->k = 'n';
+	newVALUE->k = PDF_NAME;
 	newVALUE->v.n = n;
 	return newVALUE;
 }
@@ -219,7 +221,7 @@ VALUE * createNAMEVALUE(NAME n)
 VALUE * createARRAYVALUE(ARRAY a)
 {
 	VALUE * newVALUE = (VALUE *)malloc(sizeof(VALUE));
-	newVALUE->k = 'a';
+	newVALUE->k = PDF_ARRAY;
 	newVALUE->v.a = a;
 	return newVALUE;
 }
@@ -227,7 +229,7 @@ VALUE * createARRAYVALUE(ARRAY a)
 VALUE * createDICTVALUE(DICT d)
 {
 	VALUE * newVALUE = (VALUE *)malloc(sizeof(VALUE));
-	newVALUE->k = 'd';
+	newVALUE->k = PDF_DICT;
 	newVALUE->v.d = d;
 	return newVALUE;
 }
@@ -235,7 +237,7 @@ VALUE * createDICTVALUE(DICT d)
 VALUE * createINDIRECTVALUE(INDIRECT r)
 {
 	VALUE * newVALUE = (VALUE *)malloc(sizeof(VALUE));
-	newVALUE->k = 'r';
+	newVALUE->k = PDF_INDIRECT;
 	newVALUE->v.r = r;
 	return newVALUE;
 }
@@ -304,9 +306,9 @@ char * pagesObject()
 char * pageObject()
 {
 	NAME type = createNAME("Type");
-	fprintf(stderr, "size is %lu\n", sizeof(type));
+	// fprintf(stderr, "size is %lu\n", sizeof(type));
 	NAME _page = createNAME("Page");
-	fprintf(stderr, "size is %lu\n", sizeof(_page));
+	// fprintf(stderr, "size is %lu\n", sizeof(_page));
 	VALUE * page = createNAMEVALUE(_page);
 	// fprintf(stderr, "size is %lu\n", sizeof(*page));
 
